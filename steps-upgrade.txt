@@ -1,0 +1,87 @@
+Upgrading Camunda 8.5.4 to 8.6.6 requires careful planning to ensure compatibility and prevent disruptions. Below are the recommended steps:
+
+1. Review the Release Notes
+	•	Visit the official Camunda Release Notes for versions between 8.5.4 and 8.6.6.
+	•	Pay attention to:
+	•	Breaking changes.
+	•	New features.
+	•	Deprecated or removed features.
+	•	Migration instructions, if provided.
+
+2. Backup Everything
+	•	Database: Create a full backup of the database(s) associated with Zeebe, Operate, Tasklist, Optimize, and Identity.
+	•	Configuration Files: Save copies of your custom configurations (e.g., application.yml or Helm values).
+	•	Data Storage: Backup any persistent volumes (e.g., Elasticsearch data).
+	•	BPMN Models: Ensure that all deployed models are backed up.
+
+3. Check System Requirements
+	•	Verify that your infrastructure meets the system requirements for Camunda 8.6.6, including:
+	•	Java version: Ensure your runtime supports the required Java version (e.g., Java 17 for Zeebe).
+	•	Kubernetes version: If using Kubernetes, confirm compatibility.
+	•	Database version: Ensure the database version is supported.
+	•	Elasticsearch version: Ensure compatibility with the Elasticsearch version used.
+
+4. Prepare for the Upgrade
+
+a. Helm Users
+	•	Check the Helm chart repository for updated values between versions.
+	•	Update the Helm repository:
+
+helm repo update
+
+
+
+b. Docker Compose Users
+	•	Review changes in the docker-compose.yml file provided in the new version.
+	•	Download the updated docker-compose.yml for Camunda 8.6.6 and compare it to your current setup for differences.
+
+c. Custom Deployments
+	•	Identify changes in configuration formats or required environment variables.
+
+5. Upgrade the Components
+
+a. Zeebe
+	1.	Stop Zeebe services.
+	2.	Replace the Zeebe container or binaries with version 8.6.6.
+	3.	If you use Helm:
+
+helm upgrade zeebe camunda/camunda-platform --version 8.6.6
+
+
+	4.	Apply any required database migrations (check release notes for scripts or commands).
+	5.	Restart Zeebe and monitor logs for errors.
+
+b. Operate, Tasklist, Optimize, Identity
+	•	Upgrade each component by:
+	1.	Stopping the current version.
+	2.	Replacing with the new version binaries, Docker images, or Helm configurations.
+	3.	Applying any new configuration changes if needed.
+
+c. Elasticsearch
+	•	Ensure that the Elasticsearch version remains compatible with Camunda 8.6.6.
+	•	If an Elasticsearch upgrade is required, do it before upgrading Zeebe.
+
+6. Verify Compatibility
+	•	Test Custom Configurations: If you’ve made custom configurations, verify they work with the new version.
+	•	Plugins and Extensions: Ensure any plugins, exporters, or custom code is compatible with 8.6.6.
+
+7. Test the Upgrade
+	•	Deploy the upgraded version in a staging environment.
+	•	Test end-to-end processes, BPMN deployments, and API integrations to identify issues.
+
+8. Upgrade in Production
+	•	Schedule downtime, if necessary.
+	•	Perform the upgrade following the steps tested in staging.
+	•	Monitor the system closely after the upgrade, checking logs and performance metrics.
+
+9. Post-Upgrade Validation
+	•	Validate:
+	•	Existing process instances.
+	•	New deployments.
+	•	User interface functionality (Operate, Tasklist, etc.).
+	•	Run smoke tests for critical processes.
+
+10. Update Documentation
+	•	Document the upgrade steps, changes made, and issues encountered for future reference.
+
+By following these steps, you should be able to upgrade Camunda from 8.5.4 to 8.6.6 smoothly. Let me know if you need detailed help with any specific part!
